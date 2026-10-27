@@ -1,0 +1,101 @@
+
+# Student Study Tracker
+# Project 01 - CS Portfolio
+
+sessions = []
+
+
+def add_session():
+    subject = input("Enter subject: ").strip()
+
+    if not subject:
+        print("Subject cannot be empty.")
+        return
+
+    try:
+        minutes = int(input("Enter study duration in minutes: "))
+
+        if minutes <= 0:
+            print("Duration must be greater than zero.")
+            return
+
+    except ValueError:
+        print("Please enter a valid whole number.")
+        return
+
+    session = {
+        "subject": subject,
+        "minutes": minutes
+    }
+
+    sessions.append(session)
+    print("Study session added successfully!")
+
+
+def view_sessions():
+    if not sessions:
+        print("No study sessions recorded yet.")
+        return
+
+    print("\n--- Study Sessions ---")
+
+    for number, session in enumerate(sessions, start=1):
+        hours = session["minutes"] / 60
+        print(
+            f"{number}. {session['subject']} "
+            f"- {hours:.2f} hours"
+        )
+
+
+def show_statistics():
+    if not sessions:
+        print("Add a session to see statistics.")
+        return
+
+    total_minutes = sum(
+        session["minutes"] for session in sessions
+    )
+
+    subject_totals = {}
+
+    for session in sessions:
+        subject = session["subject"]
+        subject_totals[subject] = (
+            subject_totals.get(subject, 0)
+            + session["minutes"]
+        )
+
+    print("\n--- Study Statistics ---")
+    print(f"Total study time: {total_minutes / 60:.2f} hours")
+
+    print("\nTime by subject:")
+
+    for subject, minutes in subject_totals.items():
+        print(f"{subject}: {minutes / 60:.2f} hours")
+
+
+def main():
+    while True:
+        print("\n=== Student Study Tracker ===")
+        print("1. Add study session")
+        print("2. View study sessions")
+        print("3. Show statistics")
+        print("4. Exit")
+
+        choice = input("Choose an option: ").strip()
+
+        if choice == "1":
+            add_session()
+        elif choice == "2":
+            view_sessions()
+        elif choice == "3":
+            show_statistics()
+        elif choice == "4":
+            print("Goodbye!")
+            break
+        else:
+            print("Invalid choice. Select 1-4.")
+
+
+if __name__ == "__main__":
+    main()
